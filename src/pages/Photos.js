@@ -8,34 +8,15 @@ import { useContext } from "react"
 
 function Photos() {
 
-    const imgs = useContext(Context).allPhotos
-    const [imgsComps, setImgsComps] = useState([])
-    const [allImgs, setAllImgs] = useState(imgs)
-    const [isImagesLoaded,setIsImagesLoaded] = useState(false)
+    const {allPhotos} = useContext(Context)
     
-    useEffect(() => {
-        if (imgs.length > 0) {
-            setAllImgs(imgs)
-        }
-    },[imgs])
+    const imageElements = allPhotos.map((img, i) => (
+        <Image key={img.id} img={img} className={getClass(i)} />
+    ))
     
-    useEffect(() => {
-        if (allImgs.length > 0) {
-            const arr = allImgs.map(item => {
-                return (
-                    <Image key={item.id} img={item.url} className={getClass(item.id)}/>
-                )
-            })
-            setImgsComps(arr)
-            setIsImagesLoaded(true)
-        }
-    },[allImgs])
-    
-
     return (
         <main className="photos">
-            {isImagesLoaded ? imgsComps
-                : <h1>Loading...</h1>}
+            {imageElements.length > 0 ? imageElements : <h1>Loading...</h1>}
         </main>
     )
 }
